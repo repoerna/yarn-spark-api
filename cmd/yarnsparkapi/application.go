@@ -1,4 +1,4 @@
-package cluster
+package yarnsparkapi
 
 var URL = "/ws/v1/cluster/apps"
 

@@ -95,6 +95,46 @@ func TestParseSparkStatus(t *testing.T) {
 			Running,
 			false,
 		},
+		{
+			"succeess get EnumIndex of Succeeded status",
+			args{
+				status: "succeeded",
+			},
+			Succeeded,
+			false,
+		},
+		{
+			"succeess get EnumIndex of Failed status",
+			args{
+				status: "failed",
+			},
+			Failed,
+			false,
+		},
+		{
+			"succeess get EnumIndex of Running status",
+			args{
+				status: "running",
+			},
+			Running,
+			false,
+		},
+		{
+			"succeess get EnumIndex of Unknown status",
+			args{
+				status: "unknown",
+			},
+			Unknown,
+			false,
+		},
+		{
+			"error get EnumIndex",
+			args{
+				status: "test",
+			},
+			0,
+			true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
