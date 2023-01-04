@@ -125,6 +125,6 @@ func ParseSparkStatus(states string) (States, error) {
 	case "KILLED":
 		return KILLED, nil
 	default:
-		return 0, errors.New("invalid status value")
+		return 0, errors.New("invalid state value")
 	}
 }
