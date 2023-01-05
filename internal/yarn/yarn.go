@@ -5,6 +5,8 @@ import (
 	"strings"
 )
 
+const ApplicationURL = "/ws/v1/cluster/apps"
+
 type Entry struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
