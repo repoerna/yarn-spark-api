@@ -6,6 +6,9 @@ import (
 	"net/http"
 )
 
+type GetApplicationListQueryParam struct {
+}
+
 func GetApplicationList(server string) (*YarnApplicationList, error) {
 	var y YarnApplicationList
 	var url = fmt.Sprintf(server + ApplicationURL)

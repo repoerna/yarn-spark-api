@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"go-yarn-spark-api/pkg"
 
 	flag "github.com/spf13/pflag"
 )
@@ -20,18 +20,18 @@ func init() {
 }
 
 func main() {
-	flag.Args()
+	// flag.Args()
 
-	flag.Parse()
-	if resourceManagerAddress == "" {
-		fmt.Fprintln(os.Stderr, "please input YARN Resource Manager Address using flag --rma")
-		flag.PrintDefaults()
-		os.Exit(2)
-	}
+	// flag.Parse()
+	// if resourceManagerAddress == "" {
+	// 	fmt.Fprintln(os.Stderr, "please input YARN Resource Manager Address using flag --rma")
+	// 	flag.PrintDefaults()
+	// 	os.Exit(2)
+	// }
 
-	fmt.Println(yarnStates)
-	fmt.Println(yarnApplicationType)
-	fmt.Println(resourceManagerAddress)
+	// fmt.Println(yarnStates)
+	// fmt.Println(yarnApplicationType)
+	// fmt.Println(resourceManagerAddress)
 
 	// app := cluster.Application{
 	// 	QueryParams: &cluster.QueryParams{
@@ -44,4 +44,18 @@ func main() {
 	// qp := app.BuildQueryParams()
 	// fmt.Println(qp)
 	// fmt.Println(app.BuildURL(qp))
+
+	test := test{}
+	test.Bar = "eaweawewa"
+	test.Foo = ""
+	test.FooBar = "123c sdfsdf"
+
+	fmt.Println(pkg.BuildQueryParams(test))
+
+}
+
+type test struct {
+	Foo    string `json:"foo,omitempty"`
+	Bar    string `json:"bar,omitempty"`
+	FooBar string `json:"fooBar"`
 }

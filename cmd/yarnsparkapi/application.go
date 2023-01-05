@@ -17,17 +17,17 @@ var URL = "/ws/v1/cluster/apps"
 // name - name of the application
 // deSelects - a generic fields which will be skipped in the result.
 type QueryParams struct {
-	FinalStatus,
-	Queue,
-	Limit,
-	StartedTimeBegin,
-	FinishedTimeBegin,
-	FinishedTimeEnd,
-	Name,
-	DeSelect string
-	States,
-	ApplicationTypes,
-	ApplicationTags []string
+	FinalStatus       string `json:"finalStatus,omitempty"`
+	Queue             string `json:"queue,omitempty"`
+	Limit             string `json:"limit,omitempty"`
+	StartedTimeBegin  string `json:"startedTimeBegin,omitempty"`
+	FinishedTimeBegin string `json:"finishedTimeBegin,omitempty"`
+	FinishedTimeEnd   string `json:"finishedTimeEnd,omitempty"`
+	Name              string `json:"name,omitempty"`
+	DeSelect          string `json:"deSelect,omitempty"`
+	States            string `json:"states,omitempty"`
+	ApplicationTypes  string `json:"applicationTypes,omitempty"`
+	ApplicationTags   string `json:"applicationTags,omitempty"`
 }
 
 type Application struct {
@@ -45,20 +45,4 @@ func (a *Application) BuildURL(queryParams map[string]string) string {
 
 	return url[:len(url)-1]
 
-}
-
-func (a *Application) BuildQueryParams() map[string]string {
-	queryParams := make(map[string]string)
-
-	if a.QueryParams != nil {
-		if len(a.QueryParams.States) > 0 {
-			var statesStr string
-			for _, state := range a.QueryParams.States {
-				statesStr += state + ","
-			}
-			queryParams["states"] = statesStr[:len(statesStr)-1]
-		}
-	}
-
-	return queryParams
 }
