@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
-	"go-yarn-spark-api/pkg"
+	"go-yarn-spark-api/internal/spark"
+	"go-yarn-spark-api/internal/yarn"
+	"log"
 
 	flag "github.com/spf13/pflag"
 )
@@ -45,12 +47,40 @@ func main() {
 	// fmt.Println(qp)
 	// fmt.Println(app.BuildURL(qp))
 
-	test := test{}
-	test.Bar = "eaweawewa"
-	test.Foo = ""
-	test.FooBar = "123c sdfsdf"
+	// test := test{}
+	// test.Bar = "eaweawewa"
+	// test.Foo = ""
+	// test.FooBar = "123c sdfsdf"
 
-	fmt.Println(pkg.BuildQueryParams(test))
+	// fmt.Println(pkg.BuildQueryParams(test))
+
+	server := "http://bdgbnbcldnn01.intra.excelcom.co.id:8088"
+
+	yarnQP := yarn.GetApplicationListQueryParams{}
+	yarnQP.User = "apmid"
+	yarnQP.States = "RUNNING"
+	yarnQP.ApplicationTypes = "SPARK"
+
+	yarnAppList, err := yarnQP.GetApplicationList(server)
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println(yarnAppList)
+
+	for _, app := range yarnAppList.Apps.App {
+		fmt.Println(app)
+		// go func(app yarn.YarnApplication) {
+		res, _ := spark.GetApplicationJobList(app)
+		fmt.Println("dfsd")
+		fmt.Println(res)
+		// }(app)
+
+	}
+
+	// wg := sync.WaitGroup{}
+	// wg.Add(1)
+
+	// wg.Wait()
 
 }
 

@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"errors"
+	"log"
 	"net/url"
 	"reflect"
 	"strings"
@@ -10,7 +11,7 @@ import (
 // argument should be a struct
 func BuildQueryParams(x any) (string, error) {
 	v := reflect.ValueOf(x)
-
+	log.Println(v.Kind())
 	if v.Kind() != reflect.Struct {
 		return "", errors.New("x must be a struct")
 	}
