@@ -57,7 +57,7 @@ func main() {
 	server := "http://bdgbnbcldnn01.intra.excelcom.co.id:8088"
 
 	yarnQP := yarn.GetApplicationListQueryParams{}
-	yarnQP.User = "apmid"
+	yarnQP.User = "ampid"
 	yarnQP.States = "RUNNING"
 	yarnQP.ApplicationTypes = "SPARK"
 

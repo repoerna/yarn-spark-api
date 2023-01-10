@@ -7,6 +7,20 @@ import (
 	"net/http"
 )
 
+// QueryParams struct have fields to Cluster Application API query Parameter
+// states - applications matching the given application states, specified as a comma-separated list.
+// finalStatus - the final status of the application - reported by the application itself
+// user - user name
+// queue - unfinished applications that are currently in this queue
+// limit - total number of app objects to be returned
+// startedTimeBegin - applications with start time beginning with this time, specified in ms since epoch
+// startedTimeEnd - applications with start time ending with this time, specified in ms since epoch
+// finishedTimeBegin - applications with finish time beginning with this time, specified in ms since epoch
+// finishedTimeEnd - applications with finish time ending with this time, specified in ms since epoch
+// applicationTypes - applications matching the given application types, specified as a comma-separated list.
+// applicationTags - applications matching any of the given application tags, specified as a comma-separated list.
+// name - name of the application
+// deSelects - a generic fields which will be skipped in the result.
 type GetApplicationListQueryParams struct {
 	User              string `json:"user"`
 	FinalStatus       string `json:"finalStatus,omitempty"`
@@ -42,5 +56,6 @@ func (g *GetApplicationListQueryParams) GetApplicationList(server string) (*Yarn
 	if err = json.NewDecoder(res.Body).Decode(&y); err != nil {
 		return nil, err
 	}
+	fmt.Println(y)
 	return &y, nil
 }
