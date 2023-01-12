@@ -22,7 +22,7 @@ import (
 // name - name of the application
 // deSelects - a generic fields which will be skipped in the result.
 type GetApplicationListQueryParams struct {
-	User              string `json:"user"`
+	User              string `json:"user,omitempty"`
 	FinalStatus       string `json:"finalStatus,omitempty"`
 	Queue             string `json:"queue,omitempty"`
 	Limit             string `json:"limit,omitempty"`
@@ -39,23 +39,20 @@ type GetApplicationListQueryParams struct {
 func (g *GetApplicationListQueryParams) GetApplicationList(server string) (*YarnApplicationList, error) {
 	var y YarnApplicationList
 	qp, err := pkg.BuildQueryParams(*g)
-	fmt.Println(qp)
+
 	if err != nil {
 		return nil, err
 	}
 	var url = fmt.Sprintf(server + ApplicationURL + "?" + qp)
-	fmt.Println(url)
 
 	res, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(res)
 	defer res.Body.Close()
 
 	if err = json.NewDecoder(res.Body).Decode(&y); err != nil {
 		return nil, err
 	}
-	fmt.Println(y)
 	return &y, nil
 }

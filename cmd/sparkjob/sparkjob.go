@@ -7,21 +7,37 @@ import (
 )
 
 var (
-	resourceManagerServer string
-	states                []string
+	resourceManagerServer,
+	user,
+	finalStatus,
+	queue,
+	limit,
+	startedTimeBegin,
+	finishedTimeBegin,
+	finishedTimeEnd,
+	name,
+	deSelect,
+	states,
+	applicationTypes,
+	applicationTags string
 )
 
+func Cmd() *cobra.Command {
+	CmdSparkJobList.AddCommand(All)
+
+	return CmdSparkJobList
+}
+
 func init() {
-	CmdSparkJobList.Flags().StringArrayVarP(&states, "state", "s", nil, "filter jobs in the specific state")
-	AllSparkJobList.Flags().StringVarP(&resourceManagerServer, "rmserver", "r", "localhost:8088", "YARN Resource Manager server")
+	CmdSparkJobList.PersistentFlags().StringVarP(&states, "state", "s", "", "filter jobs in the specific state [running|succeeded|failed|unknown]")
+	All.Flags().StringVarP(&resourceManagerServer, "rmserver", "r", "localhost:8088", "YARN Resource Manager server")
 }
 
 var CmdSparkJobList = &cobra.Command{
 	Use:   "sparkjob",
-	Short: "Return all of spak job detail",
+	Short: "Return Spark job/s detail managed by YARN",
 	Long: `
-	use all command to get all YARN Application with "SPARK" application type 
-	and get all of its SPARK job detail with given filter
+	Command to get Spark job detail by YARN applications
 	`,
 	// Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
@@ -29,8 +45,8 @@ var CmdSparkJobList = &cobra.Command{
 	},
 }
 
-var AllSparkJobList = &cobra.Command{
-	Use:   "all",
+var All = &cobra.Command{
+	Use:   "all-yarn-app",
 	Short: "Return all of spak job detail in all YARN applications",
 	Long: `
 	Will get all YARN Application with "SPARK" application type 
@@ -38,6 +54,6 @@ var AllSparkJobList = &cobra.Command{
 	`,
 	// Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(resourceManagerServer)
+		fmt.Println(states)
 	},
 }

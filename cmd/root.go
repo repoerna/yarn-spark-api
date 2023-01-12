@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"go-yarn-spark-api/cmd/sparkjob"
+	yarn "go-yarn-spark-api/cmd/yarn/clusterapps"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -20,8 +21,10 @@ var rootCmd = &cobra.Command{
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	sparkjob.CmdSparkJobList.AddCommand(sparkjob.AllSparkJobList)
-	rootCmd.AddCommand(sparkjob.CmdSparkJobList)
+	rootCmd.AddCommand(sparkjob.Cmd())
+	yarn.ClusterApps.AddCommand(sparkjob.CmdSparkJobList)
+	rootCmd.AddCommand(yarn.ClusterApps)
+
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
