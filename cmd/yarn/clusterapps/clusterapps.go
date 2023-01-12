@@ -3,6 +3,7 @@ package yarn
 import (
 	"fmt"
 	"go-yarn-spark-api/internal/yarn"
+	"go-yarn-spark-api/pkg"
 	"log"
 
 	"github.com/spf13/cobra"
@@ -23,19 +24,23 @@ var (
 	applicationTags string
 )
 
+var err error
+var Apps *yarn.YarnApplicationList
+
 func init() {
-	ClusterApps.Flags().StringVarP(&user, "user", "u", "", "applications matching the given application states, specified as a comma-separated list")
-	ClusterApps.Flags().StringVar(&finalStatus, "finalStatus", "", "the final status of the application - reported by the application itself")
-	ClusterApps.Flags().StringVarP(&queue, "queue", "q", "", "user name")
-	ClusterApps.Flags().StringVarP(&limit, "limit", "l", "", "total number of app objects to be returned")
-	ClusterApps.Flags().StringVar(&startedTimeBegin, "startedTimeBegin", "", "applications with start time beginning with this time, specified in ms since epoch")
-	ClusterApps.Flags().StringVar(&finishedTimeBegin, "finishedTimeBegin", "", "applications with finish time beginning with this time, specified in ms since epoch")
-	ClusterApps.Flags().StringVar(&finishedTimeEnd, "finishedTimeEnd", "", "applications with finish time ending with this time, specified in ms since epoch")
-	ClusterApps.Flags().StringVarP(&name, "name", "n", "", "name of the application")
-	ClusterApps.Flags().StringVar(&deSelect, "deSelect", "", "a generic fields which will be skipped in the result.")
-	ClusterApps.Flags().StringVarP(&states, "states", "s", "", "applications matching the given application states, specified as a comma-separated list")
-	ClusterApps.Flags().StringVar(&applicationTypes, "applicationTypes", "", "applications matching the given application types, specified as a comma-separated list")
-	ClusterApps.Flags().StringVar(&applicationTags, "applicationTags", "", "applications matching any of the given application tags, specified as a comma-separated list")
+	ClusterApps.PersistentFlags().StringVarP(&user, "user", "u", "", "YARN API - applications matching the given application states, specified as a comma-separated list")
+	ClusterApps.PersistentFlags().StringVar(&finalStatus, "finalStatus", "", "YARN API - the final status of the application - reported by the application itself")
+	ClusterApps.PersistentFlags().StringVarP(&queue, "queue", "q", "", "YARN API - unfinished applications that are currently in this queue")
+	ClusterApps.PersistentFlags().StringVarP(&limit, "limit", "l", "", "YARN API - total number of app objects to be returned")
+	ClusterApps.PersistentFlags().StringVar(&startedTimeBegin, "startedTimeBegin", "", "YARN API - applications with start time beginning with this time, specified in ms since epoch")
+	ClusterApps.PersistentFlags().StringVar(&finishedTimeBegin, "finishedTimeBegin", "", "YARN API - applications with finish time beginning with this time, specified in ms since epoch")
+	ClusterApps.PersistentFlags().StringVar(&finishedTimeEnd, "finishedTimeEnd", "", "YARN API - applications with finish time ending with this time, specified in ms since epoch")
+	ClusterApps.PersistentFlags().StringVarP(&name, "name", "n", "", "YARN API - name of the application")
+	ClusterApps.PersistentFlags().StringVar(&deSelect, "deSelect", "", "YARN API - a generic fields which will be skipped in the result.")
+	ClusterApps.PersistentFlags().StringVarP(&states, "states", "s", "", "YARN API - applications matching the given application states, specified as a comma-separated list")
+	ClusterApps.PersistentFlags().StringVar(&applicationTypes, "applicationTypes", "", "YARN API - applications matching the given application types, specified as a comma-separated list")
+	ClusterApps.PersistentFlags().StringVar(&applicationTags, "applicationTags", "", "YARN API - applications matching any of the given application tags, specified as a comma-separated list")
+
 }
 
 // func Cmd() *cobra.Command {
@@ -50,10 +55,8 @@ var ClusterApps = &cobra.Command{
 	When you run a GET operation on this resource, you obtain a collection of Application Objects.
 	`,
 	Args: cobra.MinimumNArgs(1),
-	Run: func(cmd *cobra.Command, args []string) {
-
-		fmt.Println(args)
-
+	// TraverseChildren: true,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		qp := yarn.GetApplicationListQueryParams{
 			User:              user,
 			FinalStatus:       finalStatus,
@@ -69,15 +72,13 @@ var ClusterApps = &cobra.Command{
 			ApplicationTags:   applicationTags,
 		}
 
-		apps, err := qp.GetApplicationList(args[0])
+		Apps, err = qp.GetApplicationList(args[0])
 		if err != nil {
-			log.Println(err)
+			log.Fatal(err)
 		}
 
-		fmt.Println(apps)
-
-		// for _, app := range apps.Apps.App {
-
-		// }
+	},
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(pkg.PrettyResult(Apps))
 	},
 }

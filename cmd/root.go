@@ -21,7 +21,7 @@ var rootCmd = &cobra.Command{
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	rootCmd.AddCommand(sparkjob.Cmd())
+	// rootCmd.AddCommand(sparkjob.Cmd())
 	yarn.ClusterApps.AddCommand(sparkjob.CmdSparkJobList)
 	rootCmd.AddCommand(yarn.ClusterApps)
 
