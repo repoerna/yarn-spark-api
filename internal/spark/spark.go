@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-const JobListURL = "/api/v1/applications/%s/jobs"
+const JobListURL = "api/v1/applications/%s/jobs"
 
 type Job struct {
 	JobID               int    `json:"jobId"`
