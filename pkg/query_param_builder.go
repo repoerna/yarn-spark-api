@@ -26,6 +26,7 @@ func BuildQueryParams(x any) (string, error) {
 	return params.Encode(), nil
 }
 
+// check if its have tag omitempty
 func isOmitempty(tags []string) bool {
 	for _, tag := range tags {
 		if tag == "omitempty" {

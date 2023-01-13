@@ -5,6 +5,20 @@ import (
 	"strings"
 )
 
+type Summary struct {
+	ID           string `json:"id"`
+	Status       string `json:"status"`
+	TrackingURL  string `json:"tracking_url"`
+	TotalJob     int    `json:"total_job"`
+	SparkJobList []Job  `json:"spark_job_list"`
+	IsError      bool   `json:"is_error"`
+	LogError     string `json:"log_error"`
+}
+
+type Result struct {
+	Data []Summary `json:"data"`
+}
+
 const JobListURL = "api/v1/applications/%s/jobs"
 
 type Job struct {
@@ -13,7 +27,7 @@ type Job struct {
 	SubmissionTime      string `json:"submissionTime"`
 	CompletionTime      string `json:"completionTime"`
 	StageIds            []int  `json:"stageIds"`
-	Status              Status `json:"status"`
+	Status              string `json:"status"`
 	NumTasks            int    `json:"numTasks"`
 	NumActiveTasks      int    `json:"numActiveTasks"`
 	NumCompletedTasks   int    `json:"numCompletedTasks"`

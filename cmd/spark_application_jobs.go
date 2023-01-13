@@ -23,16 +23,22 @@ var SparkApplicationJobs = &cobra.Command{
 	`,
 	// Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+
+		var res spark.Result
+
 		getYarnClusterApps(cmd, args)
 
 		yarnApps := cmd.Context().Value(YARN_APPS)
 
+		var ch chan spark.Summary
+
 		for _, app := range yarnApps.(*yarn.YarnApplicationList).Apps.App {
-			res, err := spark.GetApplicationJobList(app)
-			fmt.Println(err)
-
-			fmt.Println(pkg.PrettyResult(res))
-
+			go spark.GetApplicationJobList(ch, app)
 		}
+
+		res.Data = append(res.Data, <-ch)
+
+		fmt.Println(pkg.PrettyResult(res))
+
 	},
 }
