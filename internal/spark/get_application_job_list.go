@@ -39,13 +39,13 @@ func GetApplicationJobList(ch chan Summary, app yarn.YarnApplication) {
 	var sj []Job
 
 	url := fmt.Sprintf(app.TrackingURL + fmt.Sprintf(JobListURL, app.ID))
-
 	res, err := http.Get(url)
 	if err != nil {
 		log.Println(err)
 		summary.IsError = true
 		summary.LogError = err.Error()
 	}
+
 	defer res.Body.Close()
 
 	if err = json.NewDecoder(res.Body).Decode(&sj); err != nil {
@@ -53,6 +53,8 @@ func GetApplicationJobList(ch chan Summary, app yarn.YarnApplication) {
 		summary.IsError = true
 		summary.LogError = err.Error()
 	}
+
+	// log.Println(sj)
 
 	summary.ID = app.ID
 	summary.Status = app.State

@@ -30,13 +30,23 @@ var SparkApplicationJobs = &cobra.Command{
 
 		yarnApps := cmd.Context().Value(YARN_APPS)
 
-		var ch chan spark.Summary
+		ch := make(chan spark.Summary)
 
 		for _, app := range yarnApps.(*yarn.YarnApplicationList).Apps.App {
 			go spark.GetApplicationJobList(ch, app)
 		}
 
 		res.Data = append(res.Data, <-ch)
+
+		// defer close(ch)
+
+		// fmt.Println(pkg.PrettyResult(<-ch))
+
+		// for i := 0; i < len(yarnApps.(*yarn.YarnApplicationList).Apps.App); i++ {
+		// 	// fmt.Println(i, " -----------------------------------------")
+		// 	// data := <-ch
+		// 	res.Data = append(res.Data, <-ch)
+		// }
 
 		fmt.Println(pkg.PrettyResult(res))
 
