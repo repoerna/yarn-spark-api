@@ -38,16 +38,6 @@ var SparkApplicationJobs = &cobra.Command{
 
 		res.Data = append(res.Data, <-ch)
 
-		// defer close(ch)
-
-		// fmt.Println(pkg.PrettyResult(<-ch))
-
-		// for i := 0; i < len(yarnApps.(*yarn.YarnApplicationList).Apps.App); i++ {
-		// 	// fmt.Println(i, " -----------------------------------------")
-		// 	// data := <-ch
-		// 	res.Data = append(res.Data, <-ch)
-		// }
-
 		fmt.Println(pkg.PrettyResult(res))
 
 	},
